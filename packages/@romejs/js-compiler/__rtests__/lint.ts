@@ -219,3 +219,24 @@ test('no duplicate keys', async t => {
     },
   ]);
 });
+
+test('no debugger', async t => {
+  const goodRes = await testLint(
+    `const test = { debugger: 1 };
+    test.debugger;
+    console.log(test); // To not trigger the unused var rule.
+    `,
+    LINT_ENABLED_FORMAT_DISABLED_CONFIG,
+  );
+
+  t.is(goodRes.diagnostics.length, 0);
+
+  const badRes = await testLint(
+    `debugger;
+    console.log(debugger); // To not trigger the unused var rule.
+    `,
+    LINT_ENABLED_FORMAT_DISABLED_CONFIG,
+  );
+
+  t.snapshot(badRes.diagnostics);
+});
