@@ -232,9 +232,7 @@ test('no debugger', async t => {
   t.is(goodRes.diagnostics.length, 0);
 
   const badRes = await testLint(
-    `debugger;
-    console.log(debugger); // To not trigger the unused var rule.
-    `,
+    'debugger;',
     LINT_ENABLED_FORMAT_DISABLED_CONFIG,
   );
 
